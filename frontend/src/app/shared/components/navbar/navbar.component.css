@@ -1,0 +1,17 @@
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cart-footer {
+  padding: 8px 16px;
+  text-align: right;
+}
+
+.ant-dropdown-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

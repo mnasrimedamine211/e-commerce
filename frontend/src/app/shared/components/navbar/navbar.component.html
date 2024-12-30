@@ -1,0 +1,39 @@
+<nz-menu nzMode="horizontal" class="w-full flex justify-between items-center">
+  <div class="flex items-center gap-4">
+    <!-- Home Menu Item -->
+    <nz-menu-item nzSelected>
+      <a href="#">Home</a>
+    </nz-menu-item>
+
+    <!-- Products Menu Item -->
+    <nz-menu-item>
+      <a href="#">Products</a>
+    </nz-menu-item>
+  </div>
+
+  <!-- Cart Menu Item -->
+  <nz-menu-item>
+    <nz-dropdown [nzTrigger]="'click'" nzPlacement="bottomRight">
+      <a class="ant-dropdown-link" nz-dropdown>
+        <i nz-icon nzType="shopping-cart" nzTheme="outline"></i>
+        <nz-badge [nzCount]="cartService.getTotalItemCount()">
+          <span>Cart</span>
+        </nz-badge>
+      </a>
+      <div nz-menu>
+        <!-- Cart Items -->
+        <div *ngIf="(cartService.cartList$ | async) || []; else emptyCart">
+          <div class="cart-footer">
+            <p>
+              <strong>Total:</strong>
+              {{ cartService.getTotalPrice() | currency }}
+            </p>
+          </div>
+        </div>
+        <ng-template #emptyCart>
+          <p>Your cart is empty.</p>
+        </ng-template>
+      </div>
+    </nz-dropdown>
+  </nz-menu-item>
+</nz-menu>
