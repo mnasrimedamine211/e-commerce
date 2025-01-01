@@ -47,7 +47,6 @@ export class CartService {
   }
 
   // Track modified carts list
-
   private filteredCartListSubject: BehaviorSubject<CartItem[]> =
     new BehaviorSubject<CartItem[]>([]);
   get filteredCartList$(): Observable<CartItem[]> {

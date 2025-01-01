@@ -7,10 +7,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 
-interface ModalData {
-  products: Product[];
-}
-
 @Component({
   selector: 'select-products-modal',
   standalone: true,
@@ -18,7 +14,6 @@ interface ModalData {
     CommonModule,
     FormsModule,
     NzModalModule,
-
     NzButtonModule,
     NzIconModule,
     FormsModule,

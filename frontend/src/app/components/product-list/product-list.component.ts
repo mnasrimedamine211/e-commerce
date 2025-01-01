@@ -5,11 +5,9 @@ import { ProductService } from '../../core/services/product.service';
 import { CommonModule } from '@angular/common';
 import { StateManagementService } from '../../shared/services/state-management.service';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-
 import { FormsModule } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-
 import {
   generateUniqueId,
   getRandomInt,

@@ -1,6 +1,5 @@
 <nz-menu nzMode="horizontal" class="w-full flex justify-between items-center">
   <div class="flex items-center gap-4">
-    <!-- Products Menu Item -->
     <nz-menu-item>
       <a class="ant-dropdown-link" [routerLink]="'/products'">Products</a>
     </nz-menu-item>
@@ -8,8 +7,6 @@
       <a class="ant-dropdown-link" [routerLink]="'/carts'">Carts</a>
     </nz-menu-item>
   </div>
-
-  <!-- Cart Menu Item -->
   <nz-menu-item>
     <nz-dropdown [nzTrigger]="'click'" nzPlacement="bottomRight">
       <a class="ant-dropdown-link" nz-dropdown [routerLink]="'/carts'">
@@ -19,7 +16,6 @@
         </nz-badge>
       </a>
       <div nz-menu>
-        <!-- Cart Items -->
         <div
           *ngIf="(cartService.filteredCartList$ | async) || []; else emptyCart"
         >
