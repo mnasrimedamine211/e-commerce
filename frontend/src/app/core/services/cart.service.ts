@@ -85,6 +85,7 @@ export class CartService {
   //#endregion
 
   //#region Api Cart
+  // Fetch carts
   fetchCartList(): Observable<CartItem[]> {
     this.stateManagementService.loading = true;
     return this.http.get<CartItem[]>(`${apiUrl}${carts}`).pipe(
@@ -192,6 +193,7 @@ export class CartService {
   }
 
   //#endregion
+
   //#region  Utility Methods
   // Get price total of cart items
   getTotalPrice(): number {
@@ -202,7 +204,7 @@ export class CartService {
     });
     return priceTotal;
   }
-
+  // Get number of products in cart list
   getTotalItemCount(): number {
     return this.getProductsExistInCarts().length;
   }
@@ -230,7 +232,7 @@ export class CartService {
     });
     return quantity;
   }
-  // Trest uf product exist in cart list
+  // Trest if product exist in cart list
   isProductInCart(productId: number): boolean {
     return !!this.rawCartList.find((item) =>
       item.products.some(
@@ -239,13 +241,13 @@ export class CartService {
     );
   }
 
-  // get Available list
+  // get products are not in carts list
   getProductsExistInCarts(): Product[] {
     return this.productService.rawProductList.filter((product: Product) =>
       this.isProductInCart(product.id)
     );
   }
-  // Get unavailable list
+  // get products are in carts list
   getProductsNotExistInCart(): Product[] {
     return this.productService.rawProductList.filter(
       (product: Product) => !this.isProductInCart(product.id)

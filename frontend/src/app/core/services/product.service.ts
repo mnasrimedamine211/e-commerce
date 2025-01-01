@@ -113,7 +113,6 @@ export class ProductService {
     return this.http.get<string[]>(`${apiUrl}${products}/${categories}`).pipe(
       switchMap((response: string[]) => {
         this.categoryList = response;
-        console.log(response);
         return of(response);
       }),
       catchError((error) => {
@@ -126,8 +125,10 @@ export class ProductService {
   addProduct(product: Product): Observable<Product> {
     return this.http.post<Product>(`${apiUrl}${products}`, product).pipe(
       switchMap((response: Product) => {
-        this.rawProductList.unshift(product);
-        this.filteredProductList.unshift(product);
+        const list = this.rawProductList || [];
+        list.unshift(product);
+        this.rawProductList = [...list];
+        this.filteredProductList = [...list];
         return of(product);
       }),
       catchError((error) => {
@@ -163,6 +164,7 @@ export class ProductService {
               .includes(search.toLocaleLowerCase())
         );
   }
+  // Check product is available based on count
   isAvailable(data: Product): boolean {
     return data.rating?.count > 0;
   }

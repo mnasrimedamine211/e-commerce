@@ -1,6 +1,6 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { CartItem, CartProduct, Product } from '../../shared/utils/interfaces';
+import { CartItem, Product } from '../../shared/utils/interfaces';
 import { ProductService } from '../../core/services/product.service';
 import { CommonModule } from '@angular/common';
 import { StateManagementService } from '../../shared/services/state-management.service';
@@ -33,14 +33,22 @@ import { AddProductModalComponent } from '../add-product-modal/add-product-modal
   styleUrls: ['./product-list.component.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
   modalVisible: boolean = false;
-
+  tableHeight: string = '';
   constructor(
     public productService: ProductService,
     public stateManagementService: StateManagementService,
     public cartService: CartService
   ) {}
+  ngOnInit(): void {
+    this.stateManagementService.tableHeight$.subscribe((height) => {
+      const headerHeight = 270;
+      const availableHeight = height - headerHeight;
+      this.tableHeight =
+        availableHeight > 0 ? `${availableHeight}px` : `${600}px`;
+    });
+  }
 
   listOfColumn = [
     {

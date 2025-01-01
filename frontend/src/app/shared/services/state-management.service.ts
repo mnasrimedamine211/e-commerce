@@ -1,26 +1,26 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { HostListener, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StateManagementService {
-  constructor() {}
+  constructor(@Inject(PLATFORM_ID) private platformId: any) {
+    this.calculateTableHeight();
+  }
 
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.calculateTableHeight();
+  }
+
+  calculateTableHeight(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.tableHeight = window.innerHeight;
+    }
+  }
   //#region  Track Observable
-  // Track on search an article shared
-  private searchSubject: BehaviorSubject<string> = new BehaviorSubject<string>(
-    ''
-  );
-  get search$(): Observable<string> {
-    return this.searchSubject.asObservable();
-  }
-  get search(): string {
-    return this.searchSubject.value;
-  }
-  set search(data: string) {
-    this.searchSubject.next(data);
-  }
 
   // loading track
   private loadingSubject: BehaviorSubject<boolean> =
@@ -33,6 +33,18 @@ export class StateManagementService {
   }
   set loading(data: boolean) {
     this.loadingSubject.next(data);
+  }
+
+  private heightTableSubject: BehaviorSubject<number> =
+    new BehaviorSubject<number>(0);
+  get tableHeight$(): Observable<number> {
+    return this.heightTableSubject.asObservable();
+  }
+  get tableHeight(): number {
+    return this.heightTableSubject.value;
+  }
+  set tableHeight(data: number) {
+    this.heightTableSubject.next(data);
   }
   //#endregion
 }

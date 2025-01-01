@@ -1,65 +1,86 @@
-<nz-table
-  #cartTable
-  [nzData]="(cartService.filteredCartList$ | async) || []"
-  ngSkipHydration
->
-  <thead>
-    <tr>
-      <th nzWidth="20%">Price</th>
-      <th nzWidth="20%">Quantity</th>
-      <th nzWidth="20%">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let cart of cartTable.data">
-      <td>{{ cartService.getCartPrice(cart) | currency }}</td>
-      <td>{{ cartService.getCartQuantity(cart) }}</td>
-      <td class="flex items-center gap-2">
-        <button
-          nz-button
-          nzType="primary"
-          (click)="openModal(cart.id, true)"
-          [nzLoading]="
-            (cartService.getLoadingState(cart.id, 'added') | async) ?? false
-          "
-          [disabled]="
-            (cartService.getLoadingState(cart.id, 'added') | async) ?? false
-          "
+<section class="table-container flex flex-col h-full w-full overflow-hidden">
+  <nz-table
+    class="overflow-auto h-full flex-grow"
+    #cartTable
+    [nzBordered]="true"
+    [nzData]="(cartService.filteredCartList$ | async) || []"
+    [nzScroll]="{ y: tableHeight }"
+    [nzPageSize]="10"
+    [nzShowPagination]="true"
+    [nzPaginationPosition]="'bottom'"
+    [nzSize]="'default'"
+    ngSkipHydration
+  >
+    <thead>
+      <tr>
+        <th
+          *ngFor="let column of listOfColumn"
+          [nzSortFn]="column.compare"
+          [nzSortPriority]="column.priority"
         >
-          Add Products
-        </button>
-        <button
-          nz-button
-          nzType="default"
-          nzDanger
-          (click)="openModal(cart.id, false)"
-          [nzLoading]="
-            (cartService.getLoadingState(cart.id, 'removed') | async) ?? false
-          "
-          [disabled]="
-            (cartService.getLoadingState(cart.id, 'removed') | async) ?? false
-          "
-        >
-          Remove Products
-        </button>
-        <button
-          nz-button
-          nzType="primary"
-          nzDanger
-          (click)="deleteModal(cart)"
-          [nzLoading]="
-            (cartService.getLoadingState(cart.id, 'deleted') | async) ?? false
-          "
-          [disabled]="
-            (cartService.getLoadingState(cart.id, 'deleted') | async) ?? false
-          "
-        >
-          Delete Cart
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</nz-table>
+          {{ column.title }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cart of cartTable.data">
+        <td>{{ cartService.getCartPrice(cart) | currency }}</td>
+        <td>{{ cartService.getCartQuantity(cart) }}</td>
+        <td class="flex items-center gap-2">
+          <button
+            nz-button
+            nzType="primary"
+            (click)="openModal(cart.id, true)"
+            [nzLoading]="
+              (cartService.getLoadingState(cart.id, 'added') | async) ?? false
+            "
+            [disabled]="
+              (cartService.getLoadingState(cart.id, 'added') | async) ?? false
+            "
+          >
+            Add Products
+          </button>
+          <button
+            nz-button
+            nzType="default"
+            nzDanger
+            (click)="openModal(cart.id, false)"
+            [nzLoading]="
+              (cartService.getLoadingState(cart.id, 'removed') | async) ?? false
+            "
+            [disabled]="
+              (cartService.getLoadingState(cart.id, 'removed') | async) ?? false
+            "
+          >
+            Remove Products
+          </button>
+          <button
+            nz-button
+            nzType="primary"
+            nzDanger
+            (click)="deleteModal(cart)"
+            [nzLoading]="
+              (cartService.getLoadingState(cart.id, 'deleted') | async) ?? false
+            "
+            [disabled]="
+              (cartService.getLoadingState(cart.id, 'deleted') | async) ?? false
+            "
+          >
+            Delete Cart
+          </button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="2"></td>
+        <td>
+          <strong>Total:</strong> {{ cartService.getTotalPrice() | currency }}
+        </td>
+      </tr>
+    </tfoot>
+  </nz-table>
+</section>
 
 <select-products-modal
   *ngIf="updateModalVisible"

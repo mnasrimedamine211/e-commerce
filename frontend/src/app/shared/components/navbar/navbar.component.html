@@ -4,12 +4,15 @@
     <nz-menu-item>
       <a class="ant-dropdown-link" [routerLink]="'/products'">Products</a>
     </nz-menu-item>
+    <nz-menu-item>
+      <a class="ant-dropdown-link" [routerLink]="'/carts'">Carts</a>
+    </nz-menu-item>
   </div>
 
   <!-- Cart Menu Item -->
   <nz-menu-item>
     <nz-dropdown [nzTrigger]="'click'" nzPlacement="bottomRight">
-      <a class="ant-dropdown-link" nz-dropdown [routerLink]="'/cart'">
+      <a class="ant-dropdown-link" nz-dropdown [routerLink]="'/carts'">
         <i nz-icon nzType="shopping-cart" nzTheme="outline"></i>
         <nz-badge [nzCount]="cartService.getTotalItemCount()">
           <span>Cart</span>

@@ -11,6 +11,7 @@ import { SelectProductsModalComponent } from '../../shared/components/select-pro
 import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { products } from '../../shared/utils/utils';
 import { CartService } from '../../core/services/cart.service';
+import { StateManagementService } from '../../shared/services/state-management.service';
 
 @Component({
   selector: 'app-cart-management',
@@ -29,16 +30,46 @@ import { CartService } from '../../core/services/cart.service';
   styleUrls: ['./cart-management.component.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class CartManagementComponent {
+export class CartManagementComponent implements OnInit {
   updateModalVisible: boolean = false;
   confirmModal?: NzModalRef;
   selectedCartId: number | null = null;
   addedProduct: boolean = false;
+  tableHeight: string = '';
+  listOfColumn = [
+    {
+      title: 'Price',
+      compare: (a: Product, b: Product) => a.price - b.price,
+      priority: 1,
+    },
+    {
+      title: 'Quantity',
+      compare: null,
+      priority: false,
+    },
+
+    {
+      title: 'Actions',
+      compare: null,
+      priority: false,
+    },
+  ];
+
   constructor(
+    public stateManagementService: StateManagementService,
     public cartService: CartService,
     public productService: ProductService,
     private modal: NzModalService
   ) {}
+
+  ngOnInit(): void {
+    this.stateManagementService.tableHeight$.subscribe((height) => {
+      const headerHeight = 160;
+      const availableHeight = height - headerHeight;
+      this.tableHeight =
+        availableHeight > 0 ? `${availableHeight}px` : `${600}px`;
+    });
+  }
 
   openModal(cartId: number, isAddedProduct: boolean): void {
     this.selectedCartId = cartId;

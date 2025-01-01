@@ -1,6 +1,9 @@
-<section class="flex flex-col gap-4">
-  <div class="flex items-center justify-between flex-none">
-    <div class="flex items-center">
+<section class="flex flex-col gap-4 w-full h-full">
+  <!-- Top Section: Search and Button -->
+  <div
+    class="flex items-center sm:flex-row sm:justify-between flex-col gap-2 w-full flex-none"
+  >
+    <div class="flex items-center sm:w-1/2 w-full">
       <nz-input-group [nzSuffix]="suffixIconSearch">
         <input
           type="text"
@@ -13,84 +16,95 @@
         <i nz-icon nzType="search" nzTheme="outline"></i>
       </ng-template>
     </div>
-    <div>
+    <div class="sm:w-auto w-full">
       <button
         nz-button
         nzType="primary"
         (click)="openModal()"
-        class="py-2 px-4"
+        class="py-2 px-4 sm:w-auto w-full"
       >
         Add new
       </button>
     </div>
   </div>
 
-  <nz-table
-    class="overflow-auto h-full flex-grow"
-    #productTable
-    [nzData]="(productService.filteredProductList$ | async) || []"
-    ngSkipHydration
-  >
-    <thead>
-      <tr>
-        <th
-          *ngFor="let column of listOfColumn"
-          [nzSortFn]="column.compare"
-          [nzSortPriority]="column.priority"
-        >
-          {{ column.title }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product of productTable.data">
-        <td>{{ product.title }}</td>
-        <td>{{ product.price }}</td>
-        <td>{{ product.category }}</td>
-        <td>
-          <span
-            [ngClass]="{
-              'text-green-600': productService.isAvailable(product),
-              'text-red-600': !productService.isAvailable(product)
-            }"
+  <!-- Table Section -->
+  <section class="h-full flex-grow flex flex-col overflow-hidden">
+    <nz-table
+      class="h-full flex-grow overflow-auto"
+      #productTable
+      [nzBordered]="true"
+      [nzData]="(productService.filteredProductList$ | async) || []"
+      [nzPageSize]="10"
+      [nzScroll]="{ y: tableHeight }"
+      [nzShowPagination]="true"
+      [nzPaginationPosition]="'bottom'"
+      ngSkipHydration
+    >
+      <thead>
+        <tr>
+          <th
+            *ngFor="let column of listOfColumn"
+            [nzSortFn]="column.compare"
+            [nzSortPriority]="column.priority"
           >
-            {{
-              productService.isAvailable(product)
-                ? "Available"
-                : "Not Available"
-            }}
-          </span>
-        </td>
-        <td class="flex items-center gap-2">
-          <button
-            nz-button
-            nzType="primary"
-            [disabled]="this.cartService.isProductInCart(product.id)"
-            [nzLoading]="
-              (productService.getLoadingState(product.id, 'added') | async) ??
-              false
-            "
-            (click)="addCart(product)"
-          >
-            Add to cart
-          </button>
-          <button
-            nz-button
-            nzType="default"
-            nzDanger
-            [nzLoading]="
-              (productService.getLoadingState(product.id, 'removed') | async) ??
-              false
-            "
-            [disabled]="!this.cartService.isProductInCart(product.id)"
-            (click)="this.cartService.removeProductFromCarts(product.id)"
-          >
-            Remove from cart
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </nz-table>
+            {{ column.title }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of productTable.data">
+          <td>{{ product.title }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.category }}</td>
+          <td>
+            <span
+              [ngClass]="{
+                'text-green-600': productService.isAvailable(product),
+                'text-red-600': !productService.isAvailable(product)
+              }"
+            >
+              {{
+                productService.isAvailable(product)
+                  ? "Available"
+                  : "Not Available"
+              }}
+            </span>
+          </td>
+          <td class="flex items-center gap-2">
+            <button
+              nz-button
+              nzType="primary"
+              [disabled]="
+                this.cartService.isProductInCart(product.id) ||
+                !productService.isAvailable(product)
+              "
+              [nzLoading]="
+                (productService.getLoadingState(product.id, 'added') | async) ??
+                false
+              "
+              (click)="addCart(product)"
+            >
+              Add to cart
+            </button>
+            <button
+              nz-button
+              nzType="default"
+              nzDanger
+              [nzLoading]="
+                (productService.getLoadingState(product.id, 'removed')
+                  | async) ?? false
+              "
+              [disabled]="!this.cartService.isProductInCart(product.id)"
+              (click)="this.cartService.removeProductFromCarts(product.id)"
+            >
+              Remove from cart
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </section>
 </section>
 
 <add-product-modal
