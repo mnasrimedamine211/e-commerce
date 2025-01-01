@@ -1,0 +1,142 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Add Product"
+  [nzFooter]="null"
+  (nzOnCancel)="handleCancel()"
+>
+  <div *nzModalContent>
+    <form nz-form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      <!-- Title -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="title" nzRequired
+          >Title</nz-form-label
+        >
+        <nz-form-control [nzSpan]="18" [nzErrorTip]="'Title is required'">
+          <input
+            nz-input
+            id="title"
+            formControlName="title"
+            placeholder="Enter product title"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Price -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="price" nzRequired
+          >Price</nz-form-label
+        >
+        <nz-form-control
+          [nzSpan]="18"
+          [nzErrorTip]="'Price must be a positive number'"
+        >
+          <input
+            nz-input
+            type="number"
+            id="price"
+            formControlName="price"
+            placeholder="Enter product price"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Description -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="description" nzRequired
+          >Description</nz-form-label
+        >
+        <nz-form-control [nzSpan]="18" [nzErrorTip]="'Description is required'">
+          <textarea
+            nz-input
+            id="description"
+            rows="3"
+            formControlName="description"
+            placeholder="Enter product description"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Category -->
+      <!-- Category -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="category" nzRequired
+          >Category</nz-form-label
+        >
+        <nz-form-control [nzSpan]="18" [nzErrorTip]="'Category is required'">
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Select a category"
+            formControlName="category"
+          >
+            <nz-option
+              *ngFor="let category of productService.categoryList"
+              [nzLabel]="category"
+              [nzValue]="category"
+            >
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Image -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="image" nzRequired
+          >Image URL</nz-form-label
+        >
+        <nz-form-control [nzSpan]="18" [nzErrorTip]="'Image URL is required'">
+          <input
+            nz-input
+            type="url"
+            id="image"
+            formControlName="image"
+            placeholder="Enter product image URL"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Rating -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="rate">Rating</nz-form-label>
+        <nz-form-control
+          [nzSpan]="8"
+          [nzErrorTip]="'Rate must be between 0 and 5'"
+        >
+          <input
+            nz-input
+            type="number"
+            id="rate"
+            formControlName="rate"
+            placeholder="Rate (0-5)"
+            min="0"
+            max="5"
+          />
+        </nz-form-control>
+
+        <nz-form-label [nzSpan]="6" nzFor="count">Count</nz-form-label>
+        <nz-form-control [nzSpan]="8" [nzErrorTip]="'Count must be positive'">
+          <input
+            nz-input
+            type="number"
+            id="count"
+            formControlName="count"
+            placeholder="Enter rating count"
+            min="0"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Submit Button -->
+      <nz-form-item>
+        <nz-form-control [nzSpan]="24" class="text-right">
+          <button nz-button nzType="primary" [disabled]="!productForm.valid">
+            Submit
+          </button>
+          <button nz-button nzType="default" (click)="handleCancel()">
+            Cancel
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+</nz-modal>

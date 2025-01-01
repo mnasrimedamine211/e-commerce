@@ -1,0 +1,15 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Modal Title"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+>
+  <div *nzModalContent>
+    <nz-select
+      nzMode="multiple"
+      nzPlaceHolder="Please select"
+      [nzOptions]="productOptions"
+      [(ngModel)]="selectedProducts"
+    ></nz-select>
+  </div>
+</nz-modal>

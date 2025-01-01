@@ -14,7 +14,12 @@ export interface Rating {
 
 export interface CartItem {
   id: number;
-  title: string;
-  price: number;
+  date: string;
+  products: CartProduct[];
+  userId: number;
+}
+
+export interface CartProduct {
+  productId: number;
   quantity: number;
 }
